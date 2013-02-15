@@ -12,7 +12,7 @@ module ApiWrapper
       end
       jsonify_body(params)
 
-      response = Typhoeus::Request.send(method, "#{APP_CONFIG['ouranos_api_host']}#{uri}", params)
+      response = Typhoeus::Request.send(method, "#{ApiWrapper.configuration.api_url}#{uri}", params)
       insert_parsed_body(response)
       if response.code == 401
         raise Exception.new("Unauthorized")
@@ -41,12 +41,12 @@ module ApiWrapper
     end
 
     def access_token
-      APP_CONFIG['api_access_token']
+      ApiWrapper.configuration.api_access_token
     end
 
     def insert_common_headers(data)
       data[:headers] = {} unless data[:headers]
-      data[:headers][:Authorization] = "Oauth #{access_token}"
+      data[:headers][:Authorization] = "Oauth #{access_token}" if access_token
       content_type = 'application/json'
       data[:headers]["Content-Type"] = content_type unless data[:headers]["Content-Type"]
     end
