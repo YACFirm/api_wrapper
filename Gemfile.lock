@@ -1,0 +1,16 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ethon (0.5.9)
+      ffi (~> 1.2.0)
+      mime-types (~> 1.18)
+    ffi (1.2.1)
+    mime-types (1.21)
+    typhoeus (0.6.1)
+      ethon (~> 0.5.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  typhoeus
