@@ -7,6 +7,8 @@ Gem::Specification.new do |spec|
   spec.description = "An easy way to wrap REST apis"
   spec.authors = ["Jesús Gerónimo"]
   spec.email = 'geronimo@yacfirm.com'
-  spec.require_path = 'lib'
+  spec.homepage = 'http://www.yacfirm.com'
+
+  spec.files = Dir['lib/*.rb'] + Dir['lib/**/*.rb']
 
 end

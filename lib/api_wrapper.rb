@@ -1,2 +1,2 @@
-require 'base_moedel'
-require 'core_request'
+require 'base/core_request'
+require 'base/base_model'
