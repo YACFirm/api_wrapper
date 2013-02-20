@@ -4,7 +4,7 @@ PATH
     api_wrapper (0.0.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     diff-lcs (1.1.3)
     ethon (0.5.9)
