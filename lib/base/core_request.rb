@@ -9,23 +9,27 @@ module ApiWrapper
         params[:params] = data
       else
         params[:body] = data
+        jsonify_body(params)
       end
-      jsonify_body(params)
 
       response = Typhoeus::Request.send(method, "#{ApiWrapper.configuration.api_url}#{uri}", params)
-      insert_parsed_body(response)
+
       if response.code == 401
-        raise Exception.new("Unauthorized")
+        raise ApiWrapper::UnauthorizedRequest
       elsif response.code == 500
-        raise Exception.new("Api Error")
+        raise ApiWrapper::ApiError
+      elsif response.code == 0
+        raise ApiWrapper::NoResponse
       end
+
+      insert_parsed_body(response)
       return response
     end
 
     private
 
     def jsonify_body(data)
-      data[:body] = JSON.dump(data[:body]) if data[:body] and data[:headers]["Content-Type"] == 'application/json'
+      data[:body] = JSON.dump(data[:body]) if data[:headers]["Content-Type"] == 'application/json'
     end
 
     def insert_parsed_body(response)
@@ -35,6 +39,7 @@ module ApiWrapper
         end
         @parsed_body
       end
+
       response.parsed_body do
         JSON.parse(response.body)
       end
@@ -46,9 +51,9 @@ module ApiWrapper
 
     def insert_common_headers(data)
       data[:headers] = {} unless data[:headers]
-      data[:headers][:Authorization] = "Oauth #{access_token}" if access_token
+      data[:headers][:Authorization] = "Oauth #{access_token}"
       content_type = 'application/json'
-      data[:headers]["Content-Type"] = content_type unless data[:headers]["Content-Type"]
+      data[:headers]["Content-Type"] = content_type if data[:headers]["Content-Type"].nil? and data[:method]!=:get
     end
   end
 end

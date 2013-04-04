@@ -3,3 +3,4 @@ gemspec
 
 gem 'typhoeus'
 gem 'rspec'
+gem 'pry'

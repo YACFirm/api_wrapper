@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Jesús Gerónimo"]
   spec.email = 'geronimo@yacfirm.com'
   spec.homepage = 'http://www.yacfirm.com'
+  spec.add_dependency('typhoeus', '~> 0.6.1')
 
   spec.files = Dir['lib/*.rb'] + Dir['lib/**/*.rb']
 
