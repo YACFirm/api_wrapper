@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
 
   spec.name = 'api_wrapper'
-  spec.version = '0.0.0'
+  spec.version = '0.1'
   spec.date = '2013-02-14'
   spec.summary = "Wrap APIs and use them as local API"
   spec.description = "An easy way to wrap REST apis"
