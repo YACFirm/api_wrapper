@@ -22,7 +22,7 @@ module ApiWrapper
 
       request = CoreRequest.new(uri: url, method: method,
                                 silent_failure: silent_failure,
-                                params: request_params)
+                                data: request_params)
       return request.send
     end
   end
