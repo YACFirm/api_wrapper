@@ -1,14 +1,17 @@
 module ApiWrapper
   class BaseModel
-    class << self
-      include ApiWrapper::CoreRequest
-    end
-
     def self.routes 
       {}
     end
 
     def self.method_missing(name, *args)
+      silent_failure = true
+      str_name = name.to_s
+      if str_name[-1] == '!'
+        name = str_name.gsub('!', '').to_sym
+        silent_failure = false
+      end
+
       url, method = routes[name]
       return super unless url
       request_params = args[0]
@@ -16,7 +19,11 @@ module ApiWrapper
       if url_params
         url = url % url_params
       end
-      return make_request(url, method, request_params)
+
+      request = CoreRequest.new(uri: url, method: method,
+                                silent_failure: silent_failure,
+                                params: request_params)
+      return request.send
     end
   end
 end

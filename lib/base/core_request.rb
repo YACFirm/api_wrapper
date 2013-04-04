@@ -1,25 +1,34 @@
+require 'json'
+
 module ApiWrapper
-  module CoreRequest
-    def make_request (uri, method, data={})
+  class CoreRequest
+    def initialize(params)
+      @uri = params.fetch :uri
+      @method = params.fetch :method
+      @silent_failure = params[:silent_failure] || false
+      @data = params[:data]
+    end
+
+    def send
       params = {}
-      params[:method] = method
+      params[:method] = @method
       insert_common_headers(params)
 
-      if method == :get
-        params[:params] = data
+      if @method == :get
+        params[:params] = @data
       else
-        params[:body] = data
+        params[:body] = @data
         jsonify_body(params)
       end
 
-      response = Typhoeus::Request.send(method, "#{ApiWrapper.configuration.api_url}#{uri}", params)
+      response = Typhoeus::Request.send(@method, "#{ApiWrapper.configuration.api_url}#{@uri}", params)
 
       if response.code == 401
-        raise ApiWrapper::UnauthorizedRequest
+        raise ApiWrapper::UnauthorizedRequest unless @silent_failure
       elsif response.code == 500
-        raise ApiWrapper::ApiError
+        raise ApiWrapper::ApiError unless @silent_failure
       elsif response.code == 0
-        raise ApiWrapper::NoResponse
+        raise ApiWrapper::NoResponse unless @silent_failure
       end
 
       insert_parsed_body(response)
@@ -41,7 +50,11 @@ module ApiWrapper
       end
 
       response.parsed_body do
-        JSON.parse(response.body)
+        begin
+          JSON.parse(response.body)
+        rescue Exception => e
+          raise ApiWrapper::InvalidResponse unless @silent_failure
+        end
       end
     end
 

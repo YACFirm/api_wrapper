@@ -12,6 +12,11 @@ module ApiWrapper
                   :http_status => 500
                 },
                 {
+                  :class_name => "InvalidResponse",
+                  :error_message => "Invalid response from server",
+                  :http_status => 500
+                },
+                {
                   :class_name => "NoResponse",
                   :error_message => "Empty response",
                   :http_status => 0
