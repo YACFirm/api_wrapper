@@ -8,7 +8,7 @@ Installation
 
 Include it in your Gemfile:
 
-    gem 'api_wrapper', git: https://github.com/YACFirm/api_wrapper.git
+    gem 'api_wrapper', git: 'https://github.com/YACFirm/api_wrapper.git'
 
 and run:
 
@@ -32,7 +32,7 @@ Add to the class a method called `self.routes`, that method returns a hash in wi
     Class Example < ApiWrapper::BaseModel
         def self.routes
             {
-            create: ['/example', :post]
+            create: ['/example', :post],
             remove: ['/example/%id', :delete] 
             }
         end
@@ -40,7 +40,7 @@ Add to the class a method called `self.routes`, that method returns a hash in wi
 
 Once you have the class you can call create and remove methods passing a hash with the params the request should have:
 
-    new_example = Example.create({example: {name: "This is a test"}}
+    new_example = Example.create({example: {name: "This is a test"}})
     new_example['name'] # => 'This is a test'
 
 And you'll get a hash with the response already parsed.
